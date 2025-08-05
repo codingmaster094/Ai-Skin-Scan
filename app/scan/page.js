@@ -1,12 +1,15 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
-export default function page() {
+export default function SkinScanPage() {
   const [imageData, setImageData] = useState(null);
   const [result, setResult] = useState(null);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const cameraInputRef = useRef(null);
+  const galleryInputRef = useRef(null);
 
   const handleImageUpload = (e) => {
     const reader = new FileReader();
@@ -55,28 +58,49 @@ export default function page() {
 
   return (
     <div className="p-6 max-w-xl mx-auto text-center">
-      <h1 className="text-2xl font-bold mb-4">Scan Your Face</h1>
+      <h1 className="text-2xl font-bold mb-4">AI Skin Analysis</h1>
       <p className="mb-4 text-gray-600">
-        Please take a clear photo or upload one to analyze your skin and get personalized product recommendations.
+        Choose how you'd like to provide your photo:
       </p>
 
-      <label className="block mb-4">
-        <input
-          type="file"
-          accept="image/*"
-          capture="environment"
-          onChange={handleImageUpload}
-          className="hidden"
-          id="cameraInput"
-        />
-        <span className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-700">
-          📸 Take/Upload Photo
-        </span>
-      </label>
+      {/* CAMERA INPUT (TAKE PHOTO) */}
+      <input
+        type="file"
+        accept="image/*"
+        capture="environment"
+        onChange={handleImageUpload}
+        ref={cameraInputRef}
+        className="hidden"
+      />
+      <button
+        onClick={() => cameraInputRef.current.click()}
+        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mb-3 mr-3"
+      >
+        📷 Take Photo
+      </button>
+
+      {/* GALLERY INPUT (UPLOAD PHOTO) */}
+      <input
+        type="file"
+        accept="image/*"
+        onChange={handleImageUpload}
+        ref={galleryInputRef}
+        className="hidden"
+      />
+      <button
+        onClick={() => galleryInputRef.current.click()}
+        className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 mb-3"
+      >
+        🖼️ Upload Photo
+      </button>
 
       {imageData && (
-        <div className="mb-4">
-          <img src={imageData} alt="Preview" className="w-48 mx-auto rounded shadow" />
+        <div className="mb-4 mt-6">
+          <img
+            src={imageData}
+            alt="Preview"
+            className="w-48 mx-auto rounded shadow border"
+          />
         </div>
       )}
 
@@ -84,7 +108,7 @@ export default function page() {
         <button
           onClick={analyzeSkin}
           disabled={loading}
-          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 disabled:opacity-50"
+          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 disabled:opacity-50 mt-2"
         >
           {loading ? 'Analyzing...' : 'Analyze Skin'}
         </button>
