@@ -21,25 +21,31 @@ export default function Home() {
   }
 
   const handleSubmit = async () => {
-    if (!image) return alert('Please select or take a photo first.')
-    const formData = new FormData()
-    formData.append('image', image)
+  if (!image) return alert('Please select or take a photo first.')
+  const formData = new FormData()
+  formData.append('image', image)
 
-    setLoading(true)
+  setLoading(true)
+
+  try {
     const res = await fetch('/api/scan', {
       method: 'POST',
       body: formData,
     })
 
     const data = await res.json()
-    setResult(data)
+    if (data.error) throw new Error(data.error)
 
+    setResult(data)
     setTimeout(() => {
       document.getElementById('results')?.scrollIntoView({ behavior: 'smooth' })
     }, 100)
-
-    setLoading(false)
+  } catch (err) {
+    alert('Skin analysis failed: ' + err.message)
   }
+
+  setLoading(false)
+}
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center p-4 bg-gray-100 text-center">

@@ -94,26 +94,35 @@ function getRandomConditions() {
 }
 
 export async function POST(req) {
-  const data = await req.formData()
-  const file = data.get('image')
+  try {
+    const data = await req.formData()
+    const file = data.get('image')
 
-  // Optional: save file to public (just for mock)
-  const bytes = await file.arrayBuffer()
-  const buffer = Buffer.from(bytes)
-  const filename = `${Date.now()}_${file.name}`
-  await writeFile(path.join(process.cwd(), 'public', filename), buffer)
-
-  const conditions = getRandomConditions()
-
-  const products = []
-  conditions.forEach((cond) => {
-    if (PRODUCT_MAP[cond]) {
-      products.push(...PRODUCT_MAP[cond])
+    if (!file) {
+      return NextResponse.json({ error: 'No file uploaded' }, { status: 400 })
     }
-  })
 
-  return NextResponse.json({
-    conditions,
-    products: [...new Set(products)] // unique list
-  })
+    // ❌ REMOVE file saving to public on Vercel
+    // const bytes = await file.arrayBuffer()
+    // const buffer = Buffer.from(bytes)
+    // const filename = `${Date.now()}_${file.name}`
+    // await writeFile(path.join(process.cwd(), 'public', filename), buffer)
+
+    const conditions = getRandomConditions()
+
+    const products = []
+    conditions.forEach((cond) => {
+      if (PRODUCT_MAP[cond]) {
+        products.push(...PRODUCT_MAP[cond])
+      }
+    })
+
+    return NextResponse.json({
+      conditions,
+      products: [...new Set(products)],
+    })
+  } catch (error) {
+    console.error('API error:', error)
+    return NextResponse.json({ error: 'Server error' }, { status: 500 })
+  }
 }
