@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import ProductList from '@/components/ProductList'
 import ResultCard from '@/components/ResultCard'
+import { useSearchParams } from 'next/navigation'
 
 export default function Home() {
   const [step, setStep] = useState('landing') // landing, qr, analyze
@@ -9,6 +10,14 @@ export default function Home() {
   const [preview, setPreview] = useState(null)
   const [result, setResult] = useState(null)
   const [loading, setLoading] = useState(false)
+const searchParams = useSearchParams()
+
+useEffect(() => {
+  const urlStep = searchParams.get('step')
+  if (urlStep === 'qr') {
+    setStep('qr')
+  }
+}, [])
 
   const handleFileInput = (e) => {
     const file = e.target.files[0]
