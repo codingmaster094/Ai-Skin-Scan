@@ -17,7 +17,7 @@ export default function ScanPage() {
       {/* Top Guide */}
       <div className="bg-gray-900 rounded-xl p-4 flex items-center gap-4">
         <img
-          src="/avatar.jpg"
+          src="/avatar.png"
           alt="Guide"
           className="w-16 h-16 rounded-md object-cover"
         />
