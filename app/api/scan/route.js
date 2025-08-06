@@ -102,12 +102,6 @@ export async function POST(req) {
       return NextResponse.json({ error: 'No file uploaded' }, { status: 400 })
     }
 
-    // ❌ REMOVE file saving to public on Vercel
-    // const bytes = await file.arrayBuffer()
-    // const buffer = Buffer.from(bytes)
-    // const filename = `${Date.now()}_${file.name}`
-    // await writeFile(path.join(process.cwd(), 'public', filename), buffer)
-
     const conditions = getRandomConditions()
 
     const products = []
