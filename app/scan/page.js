@@ -2,8 +2,9 @@
 import { useState } from 'react'
 import ProductList from '@/components/ProductList'
 import ResultCard from '@/components/ResultCard'
+import StepLoader from '@/components/StepLoader'
 import { useSearchParams } from 'next/navigation'
-
+import { Suspense } from 'react'
 export default function Home() {
   const [step, setStep] = useState('landing') // landing, qr, analyze
   const [image, setImage] = useState(null)
@@ -52,6 +53,9 @@ useEffect(() => {
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center p-4 bg-white text-center">
+      <Suspense>
+        <StepLoader setStep={setStep} />
+      </Suspense>
       {/* Landing Screen */}
       {step === 'landing' && (
         <div className="w-full max-w-md" style={{position:"relative"}}>
