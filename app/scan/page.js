@@ -1,15 +1,60 @@
 'use client'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function ScanPage() {
+  const router = useRouter()
   const [image, setImage] = useState(null)
   const [preview, setPreview] = useState(null)
+  const [result, setResult] = useState(null)
+  const [loading, setLoading] = useState(false)
 
   const handleFileInput = (e) => {
     const file = e.target.files[0]
     if (!file) return
     setImage(file)
     setPreview(URL.createObjectURL(file))
+  }
+
+  const handleSubmit = async () => {
+    if (!image) return alert('Please select or take a photo first.')
+
+    const formData = new FormData()
+    formData.append('image', image)
+
+    setLoading(true)
+    try {
+      const res = await fetch('/api/scan', {
+        method: 'POST',
+        body: formData,
+      })
+      const data = await res.json()
+      if (data.error) throw new Error(data.error)
+      setResult(data)
+    } catch (err) {
+      alert('Analysis failed: ' + err.message)
+    }
+    setLoading(false)
+  }
+
+  if (result) {
+    return (
+      <main className="min-h-screen bg-white text-black p-6 max-w-md mx-auto text-left">
+        <h2 className="text-xl font-semibold mb-4">Detected Conditions</h2>
+        <ul className="list-disc pl-5 mb-6">
+          {result.conditions.map((c, i) => (
+            <li key={i}>{c}</li>
+          ))}
+        </ul>
+
+        <h2 className="text-xl font-semibold mb-4">Recommended Products</h2>
+        <ul className="list-disc pl-5">
+          {result.products.map((p, i) => (
+            <li key={i}>{p}</li>
+          ))}
+        </ul>
+      </main>
+    )
   }
 
   return (
@@ -67,7 +112,7 @@ export default function ScanPage() {
           className="hidden"
         />
 
-        {/* Preview (optional) */}
+        {/* Preview */}
         {preview && (
           <img
             src={preview}
@@ -75,6 +120,23 @@ export default function ScanPage() {
             className="w-48 h-48 object-cover rounded-lg border mx-auto mt-4"
           />
         )}
+
+        {/* Action Buttons */}
+        <div className="flex gap-4 mt-6">
+          <button
+            onClick={() => router.push('/')}
+            className="w-1/2 py-3 bg-gray-700 text-white rounded-lg hover:bg-gray-600"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={handleSubmit}
+            disabled={!image || loading}
+            className="w-1/2 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:opacity-50"
+          >
+            {loading ? 'Analyzing...' : 'Send'}
+          </button>
+        </div>
       </div>
     </main>
   )
