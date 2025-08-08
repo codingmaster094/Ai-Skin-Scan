@@ -241,8 +241,8 @@ async function streamToNodeReadable(webRequest) {
   return stream
 }
 
-const uploadDir = path.join(process.cwd(), 'public', 'upload')
-fs.mkdirSync(uploadDir, { recursive: true })
+// const uploadDir = path.join(process.cwd(), 'public', 'upload')
+// fs.mkdirSync(uploadDir, { recursive: true })
 
 // Main POST handler
 export async function POST(req) {
@@ -264,10 +264,10 @@ export async function POST(req) {
     const form = formidable({
        multiples: false,
         keepExtensions: true,
-        uploadDir: uploadDir, // 👈 set upload destination
-      filename: (name, ext, part) => {
-        return `${Date.now()}-${part.originalFilename}`
-      },
+      //   uploadDir: uploadDir, // 👈 set upload destination
+      // filename: (name, ext, part) => {
+      //   return `${Date.now()}-${part.originalFilename}`
+      // },
        } )
 
     const { fields, files } = await new Promise((resolve, reject) => {
@@ -323,7 +323,7 @@ export async function POST(req) {
 
     return NextResponse.json({
       analysis: selectedConditions.map(condition => ({
-        user_image: publicUrl,
+        // user_image: publicUrl,
         name: condition,
         status: ['Bad', 'Average', 'Good'][Math.floor(Math.random() * 3)],
         score: Math.floor(Math.random() * 41) + 60,

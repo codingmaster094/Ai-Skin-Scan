@@ -65,13 +65,13 @@ console.log("result" , result)
             key={i}
             className="min-w-[200px] bg-white border rounded-xl shadow-md p-3 text-center"
           >
-            <img
+            {/* <img
              src={c.user_image}
               alt={c.name}
               width={70}
               height={70}
               className="rounded-full object-cover mx-auto "
-            />
+            /> */}
             <div className="text-md font-medium text-gray-800">{c.name}</div>
             {c.score !== null && (
               <div className="text-sm text-orange-600 font-semibold mt-1">{c.score} / 100</div>
