@@ -30,6 +30,8 @@ export default function Home() {
         body: formData,
       })
       const data = await res.json()
+    console.log("data" , data);
+    
       if (data.error) throw new Error(data.error)
       setResult(data)
       setTimeout(() => {
@@ -136,11 +138,11 @@ export default function Home() {
 
       {/* Results */}
       {result && (
-        <div id="results" className="mt-10 w-full max-w-xl">
-          <ResultCard conditions={result.conditions} />
-          <ProductList products={result.products} />
-        </div>
-      )}
+      <div id="results" className="mt-10 w-full max-w-xl">
+        <ResultCard conditions={result.analysis} />
+        <ProductList products={result.recommendations} />
+      </div>
+)}
     </main>
   )
 }

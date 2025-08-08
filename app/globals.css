@@ -943,3 +943,31 @@ video {
   }
 }
 
+    .toggle-wrapper {
+    display: flex;
+    border: 2px solid #60034c;
+    overflow: hidden;
+    width: fit-content;
+    font-family: sans-serif;
+}
+
+.toggle-button {
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    background-color: white;
+    color: #60034c;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    min-width: 100px;
+    text-align: center;
+}
+
+.toggle-button.active {
+    background-color: #60034c;
+    color: white;
+}
+
+.toggle-button:not(.active):hover {
+    background-color: #f0f0f0;
+}
