@@ -36,24 +36,85 @@ export default function ScanPage() {
     }
     setLoading(false)
   }
-
+console.log("result" , result)
   if (result) {
     return (
-      <main className="min-h-screen bg-white text-black p-6 max-w-md mx-auto text-left">
-        <h2 className="text-xl font-semibold mb-4">Detected Conditions</h2>
-        <ul className="list-disc pl-5 mb-6">
-          {result.conditions.map((c, i) => (
-            <li key={i}>{c}</li>
+      <main className="min-h-screen bg-white text-black p-4 max-w-md mx-auto text-left font-sans">
+        {/* Header Cards */}
+        {/* <div className="grid grid-cols-1 gap-4 mb-6">
+          {result.analysis.map((c, i) => (
+            <div key={i} className="border rounded-xl shadow-sm p-3 flex items-center">
+              <img
+                src={c.image || 'https://via.placeholder.com/60'} // Replace with actual image if available
+                alt={c.name}
+                className="w-16 h-16 rounded-full object-cover mr-4"
+              />
+              <div className="flex-1">
+                <div className="text-sm text-gray-500">{c.name}</div>
+                <div className="text-xs text-gray-400">Score: {c.score}</div>
+                <div className="text-xs text-gray-400">Status: {c.status}</div>
+              </div>
+              <button className="ml-auto text-blue-600 text-sm font-medium">Show more</button>
+            </div>
           ))}
-        </ul>
+        </div> */}
+        <div className="overflow-x-auto whitespace-nowrap px-2">
+      <div className="flex g-3 space-x-4">
+        {result.analysis.map((c, i) => (
+          <div
+            key={i}
+            className="min-w-[200px] bg-white border rounded-xl shadow-md p-3 text-center"
+          >
+            <img
+             src={c.user_image}
+              alt={c.name}
+              width={70}
+              height={70}
+              className="rounded-full object-cover mx-auto "
+            />
+            <div className="text-md font-medium text-gray-800">{c.name}</div>
+            {c.score !== null && (
+              <div className="text-sm text-orange-600 font-semibold mt-1">{c.score} / 100</div>
+            )}
+            <div className="text-sm text-gray-500 mt-1">{c.status}</div>
+            <button className="mt-2 text-blue-600 text-sm font-medium">Show more</button>
+          </div>
+        ))}
+      </div>
+    </div>
 
-        <h2 className="text-xl font-semibold mb-4">Recommended Products</h2>
-        <ul className="list-disc pl-5">
-          {result.products.map((p, i) => (
-            <li key={i}>{p}</li>
-          ))}
-        </ul>
+        {/* Recommendations */}
+        <h2 className="text-lg font-semibold mb-3">Recommendations for you</h2>
+        <div className="space-y-4">
+          <div className="recommendation-grid">
+            {result.recommendations.map((p, i) => (
+              <div key={i} className="bg-blue-50 rounded-xl p-4 shadow-sm">
+                <h3 className="font-semibold text-sm text-blue-800 mb-1">{p.stepTitle}</h3>
+                <p className="text-xs text-gray-600 mb-3">{p.description}</p>
+                <div className="card">
+                  <img src={p.product.image}
+                    alt={p.product.name} width={150} height={100} />
+                  <div className="card-content">
+                    <h3 className="card-title">{p.product.name}</h3>
+                    <div className="price">${p.product.price}</div>
+                    🕒 {p.product.timeOfDay}
+                    <div className="rating">★★★★☆</div>
+                    <a href="#" className="button">Add to Cart</a>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Footer Button */}
+        <div className="mt-6 text-center">
+          <button className="bg-black text-white px-6 py-2 rounded-full text-sm font-semibold">
+            🔍 RECOMMENDATIONS FOR YOU
+          </button>
+        </div>
       </main>
+
     )
   }
 

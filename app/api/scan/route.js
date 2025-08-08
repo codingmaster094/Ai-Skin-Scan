@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server'
 import formidable from 'formidable'
 import { Readable } from 'stream'
-
+import fs from 'fs'
+import path from 'path'
 // Disable default body parsing
 export const config = {
   api: {
@@ -65,154 +66,164 @@ const FULL_PRODUCT_CATALOG = {
     description: 'Deep cleans pores and removes excess oil.',
     price: 22.0,
     usage: ['Morning'],
-    image: 'https://via.placeholder.com/80x80?text=Charcoal',
+    image: '/Charcoal-Detox-Cleanser.jpg',
   },
   'BHA Exfoliant': {
     title: '2% BHA Liquid Exfoliant',
     description: 'Unclogs pores and smooths skin texture.',
     price: 32.0,
     usage: ['Evening'],
-    image: 'https://via.placeholder.com/80x80?text=BHA',
+    image: '/BHA-Liquid-Exfoliant.jpg',
   },
   'Benzoyl Peroxide Gel': {
     title: 'Benzoyl Peroxide Spot Gel',
     description: 'Targets acne-causing bacteria effectively.',
     price: 25.0,
     usage: ['Morning', 'Evening'],
-    image: 'https://via.placeholder.com/80x80?text=BPO',
+    image: '/Benzoyl-Peroxide-Spot Gel.jpg',
   },
   'Clinique Take The Day Off™ Cleansing Balm': {
     title: 'Clinique Take The Day Off™ Cleansing Balm',
     description: 'Gently removes makeup, sunscreen, and impurities.',
     price: 38.4,
     usage: ['Evening'],
-    image: 'https://via.placeholder.com/80x80?text=Clinique',
+    image: '/Cleansing-Balm.jpg',
   },
   'Avocado Ceramide Moisture Barrier Cleanser': {
     title: 'Avocado Ceramide Moisture Barrier Cleanser',
     description: 'Cleans deeply while maintaining skin’s balance.',
     price: 28.0,
     usage: ['Morning', 'Evening'],
-    image: 'https://via.placeholder.com/80x80?text=Avocado',
+    image: '/Moisture-Barrier-Cleanser.jpg',
   },
   'Retinol Treatment': {
     title: 'Advanced Retinol Night Treatment',
     description: 'Fights wrinkles and fine lines overnight.',
     price: 45.0,
     usage: ['Evening'],
-    image: 'https://via.placeholder.com/80x80?text=Retinol',
+    image: '/Retinol-skin-crem.jpg',
   },
   'Clay Mask': {
     title: 'Oil-Absorbing Clay Mask',
     description: 'Removes impurities and tightens pores.',
     price: 18.0,
     usage: ['Evening'],
-    image: 'https://via.placeholder.com/80x80?text=ClayMask',
+    image: '/Clay-Mask.avif',
   },
   'Niacinamide Serum': {
     title: 'Niacinamide 10% Brightening Serum',
     description: 'Improves skin texture and tone.',
     price: 27.5,
     usage: ['Morning', 'Evening'],
-    image: 'https://via.placeholder.com/80x80?text=Niacinamide',
+    image: '/Niacinamide-Serum.jpg',
   },
   'Vitamin C Serum': {
     title: 'Vitamin C Radiance Serum',
     description: 'Brightens and reduces dark spots.',
     price: 34.99,
     usage: ['Morning'],
-    image: 'https://via.placeholder.com/80x80?text=Vit+C',
+    image: '/Vitamin-C-Serum.jpg',
   },
   'Niacinamide Toner': {
     title: 'Pore Refining Niacinamide Toner',
     description: 'Minimizes pores and balances skin.',
     price: 21.0,
     usage: ['Morning', 'Evening'],
-    image: 'https://via.placeholder.com/80x80?text=Toner',
+    image: '/Niacinamide-Toner.jpg',
   },
   'Brightening Cream': {
     title: 'Melasma Brightening Cream',
     description: 'Targets melasma and hyperpigmentation.',
     price: 39.0,
     usage: ['Evening'],
-    image: 'https://via.placeholder.com/80x80?text=Bright',
+    image: '/Brightening-Cream.jpg',
   },
   'Sunscreen SPF 50+': {
     title: 'Broad Spectrum SPF 50+ Sunscreen',
     description: 'Protects against harmful UV rays.',
     price: 19.99,
     usage: ['Morning'],
-    image: 'https://via.placeholder.com/80x80?text=SPF50',
+    image: '/Spectrum-Sunscreen.jpg',
   },
   'Azelaic Acid Serum': {
     title: 'Azelaic Acid 10% Refining Serum',
     description: 'Fades post-inflammatory pigmentation.',
     price: 30.0,
     usage: ['Evening'],
-    image: 'https://via.placeholder.com/80x80?text=Azelaic',
+    image: '/Azelaic-Acid-Serum.jpg',
   },
   'Lactic Acid Exfoliant': {
     title: 'Lactic Acid 5% Gentle Exfoliant',
     description: 'Improves skin roughness and tone.',
     price: 23.0,
     usage: ['Evening'],
-    image: 'https://via.placeholder.com/80x80?text=Lactic',
+    image: '/Lactic-Acid-Exfoliant.jpg',
   },
   'Pore-Minimizing Toner': {
     title: 'Daily Pore-Minimizing Toner',
     description: 'Refines and tightens enlarged pores.',
     price: 20.0,
     usage: ['Morning'],
-    image: 'https://via.placeholder.com/80x80?text=Pores',
+    image: '/Pore-Minimizing-Toner.jpg',
   },
   'Salicylic Acid Cleanser': {
     title: '2% Salicylic Acid Cleanser',
     description: 'Deep cleans pores and prevents acne.',
     price: 24.0,
     usage: ['Morning', 'Evening'],
-    image: 'https://via.placeholder.com/80x80?text=SA+Cleanser',
+    image: '/Salicylic-Acid-Cleanser.jpg',
   },
   'Exfoliating Pads': {
     title: 'Glycolic Acid Exfoliating Pads',
     description: 'Removes dead skin and smooths texture.',
     price: 29.0,
     usage: ['Evening'],
-    image: 'https://via.placeholder.com/80x80?text=Pads',
+    image: '/Exfoliating-Pads.jpg',
+  },
+
+
+
+  'Hyaluronic Acid Serum': {
+    title: 'Intense Hydration Moisturizer',
+    description: 'Nourishes and restores dry skin.',
+    price: 26.0,
+    usage: ['Morning', 'Evening'],
+    image: '/Hydrating-Moisturizer.jpg',
   },
   'Hydrating Moisturizer': {
     title: 'Intense Hydration Moisturizer',
     description: 'Nourishes and restores dry skin.',
     price: 26.0,
     usage: ['Morning', 'Evening'],
-    image: 'https://via.placeholder.com/80x80?text=Hydrate',
+    image: '/Hydrating-Moisturizer.jpg',
   },
   'Peptide Serum': {
     title: 'Firming Peptide Serum',
     description: 'Boosts collagen and elasticity.',
     price: 40.0,
     usage: ['Evening'],
-    image: 'https://via.placeholder.com/80x80?text=Peptides',
+    image: '/Peptide-Serum.jpg',
   },
   'Anti-aging Night Cream': {
     title: 'Night Renewal Anti-aging Cream',
     description: 'Reduces wrinkles and nourishes overnight.',
     price: 42.0,
     usage: ['Evening'],
-    image: 'https://via.placeholder.com/80x80?text=AntiAge',
+    image: '/Anti-aging-Night-Cream.jpg',
   },
   'Ceramide Repair Balm': {
     title: 'Ceramide Barrier Repair Balm',
     description: 'Rebuilds and protects the skin barrier.',
     price: 35.0,
     usage: ['Evening'],
-    image: 'https://via.placeholder.com/80x80?text=Ceramide',
+    image: '/Cleansing-Balm.jpg',
   },
   'Glow Booster Serum': {
     title: 'Glow Booster Serum',
     description: 'Revives dull and tired-looking skin.',
     price: 30.0,
     usage: ['Morning'],
-    image: 'https://via.placeholder.com/80x80?text=Glow',
+    image: '/Glow-Serum.jpg',
   },
 }
 
@@ -229,6 +240,9 @@ async function streamToNodeReadable(webRequest) {
   })
   return stream
 }
+
+const uploadDir = path.join(process.cwd(), 'public', 'upload')
+fs.mkdirSync(uploadDir, { recursive: true })
 
 // Main POST handler
 export async function POST(req) {
@@ -247,7 +261,14 @@ export async function POST(req) {
       'content-length': contentLength,
     }
 
-    const form = formidable({ multiples: false, keepExtensions: true })
+    const form = formidable({
+       multiples: false,
+        keepExtensions: true,
+        uploadDir: uploadDir, // 👈 set upload destination
+      filename: (name, ext, part) => {
+        return `${Date.now()}-${part.originalFilename}`
+      },
+       } )
 
     const { fields, files } = await new Promise((resolve, reject) => {
       form.parse(nodeReadable, (err, fields, files) => {
@@ -256,8 +277,15 @@ export async function POST(req) {
       })
     })
 
-    const image = files.image
-    if (!image) throw new Error('No image uploaded')
+    // const image = files.image
+    // if (!image) throw new Error('No image uploaded')
+
+     const image = files.image
+    if (!image || !image[0]) throw new Error('No image uploaded')
+
+    const savedPath = image[0].filepath
+    const filename = path.basename(savedPath)
+    const publicUrl = `/upload/${filename}` // 👈 public URL 
 
     // Select random conditions and related product names
     const shuffled = CONDITIONS.sort(() => 0.5 - Math.random())
@@ -272,7 +300,7 @@ export async function POST(req) {
         description: 'No description available.',
         price: 20.0,
         usage: ['Morning'],
-        image: 'https://via.placeholder.com/80x80?text=Product',
+        image: '/Glow-Serum.jpg',
       }
 
       const stepTitle = name.toLowerCase().includes('cleanser')
@@ -295,6 +323,7 @@ export async function POST(req) {
 
     return NextResponse.json({
       analysis: selectedConditions.map(condition => ({
+        user_image: publicUrl,
         name: condition,
         status: ['Bad', 'Average', 'Good'][Math.floor(Math.random() * 3)],
         score: Math.floor(Math.random() * 41) + 60,

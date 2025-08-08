@@ -2,7 +2,60 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .section-title {
+    @apply text-[28px] mb-6 text-[#222];
+  }
 
+  @screen sm {
+    .section-title {
+      @apply text-[22px];
+    }
+  }
 
+  .recommendation-grid {
+    @apply grid gap-6;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
 
+  .card {
+    @apply  bg-white g-4 rounded-lg shadow-md overflow-hidden transition-transform duration-200 ease-in-out;
+  }
 
+  .card:hover {
+    @apply -translate-y-1;
+  }
+
+  /* .card img {
+    @apply w-full object-cover block;
+  } */
+
+  .card-content {
+    @apply p-4;
+  }
+
+  .card-title {
+    @apply text-base font-semibold mb-2 text-[#333];
+  }
+
+  .price {
+    @apply text-sm text-[#e60023] font-bold mb-2;
+  }
+
+  .rating {
+    @apply text-sm text-yellow-500 mb-3;
+  }
+
+  .button {
+    @apply inline-block px-3 py-2 bg-[#222] text-white text-center rounded text-sm no-underline transition-colors duration-200;
+  }
+
+  .button:hover {
+    @apply bg-[#444];
+  }
+}
+
+.card{
+display: flex;
+gap: 16px;
+}

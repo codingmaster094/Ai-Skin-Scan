@@ -12,7 +12,9 @@
     "@heroicons/react": "^2.2.0",
     "form-data": "^4.0.4",
     "formidable": "^3.5.4",
+    "multer": "^2.0.2",
     "next": "15.4.5",
+    "next-connect": "^1.0.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "replicate": "^1.0.1"
