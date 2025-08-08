@@ -139,8 +139,8 @@ export default function Home() {
       {/* Results */}
       {result && (
       <div id="results" className="mt-10 w-full max-w-xl">
-        <ResultCard conditions={result.analysis} />
-        <ProductList products={result.recommendations} />
+        <ResultCard conditions={result.analysis} products={result.recommendations}/>
+        {/* <ProductList products={result.recommendations} /> */}
       </div>
 )}
     </main>
