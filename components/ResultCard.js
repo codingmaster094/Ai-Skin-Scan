@@ -32,7 +32,13 @@ export default function ResultCard({ conditions , products }) {
         <h2 className="text-lg font-semibold mb-3">Recommendations for you</h2>
         <div className="space-y-4">
           <div className="recommendation-grid">
-            {products.map((p, i) => (
+            {products.map((p, i) => {
+              console.log("ppp" , p)
+              const rating = p.product.rating || 0;
+              const fullStars = Math.floor(rating);
+              const halfStar = rating % 1 >= 0.5;
+              const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+              return (
               <div key={i} className="bg-blue-50 rounded-xl p-4 shadow-sm">
                 <h3 className="font-semibold text-sm text-blue-800 mb-1">{p.stepTitle}</h3>
                 <p className="text-xs text-gray-600 mb-3">{p.description}</p>
@@ -43,12 +49,22 @@ export default function ResultCard({ conditions , products }) {
                     <h3 className="card-title">{p.product.name}</h3>
                     <div className="price">${p.product.price}</div>
                     🕒 {p.product.timeOfDay}
-                    <div className="rating">★★★★☆</div>
+                    <div className="rating">
+                      {Array(fullStars).fill('★').map((star, idx) => (
+                        <span key={`full-${idx}`}>{star}</span>
+                      ))}
+                      {halfStar && <span>★</span>} {/* Replace with half-star icon if needed */}
+                      {Array(emptyStars).fill('☆').map((star, idx) => (
+                        <span key={`empty-${idx}`}>{star}</span>
+                      ))}
+                      <span className="text-gray-600 text-sm ml-1">({rating})</span>
+                    </div>
                     <a href="#" className="button">Add to Cart</a>
                   </div>
                 </div>
               </div>
-            ))}
+            )
+            })}
           </div>
         </div>
 

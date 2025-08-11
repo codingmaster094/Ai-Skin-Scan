@@ -1,6 +1,5 @@
 'use client'
 import { useState } from 'react'
-import ProductList from '@/components/ProductList'
 import ResultCard from '@/components/ResultCard'
 
 export default function Home() {

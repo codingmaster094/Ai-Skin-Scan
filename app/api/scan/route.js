@@ -67,6 +67,7 @@ const FULL_PRODUCT_CATALOG = {
     price: 22.0,
     usage: ['Morning'],
     image: '/Charcoal-Detox-Cleanser.jpg',
+    rating: 4.6,
   },
   'BHA Exfoliant': {
     title: '2% BHA Liquid Exfoliant',
@@ -74,6 +75,7 @@ const FULL_PRODUCT_CATALOG = {
     price: 32.0,
     usage: ['Evening'],
     image: '/BHA-Liquid-Exfoliant.jpg',
+    rating: 4.7,
   },
   'Benzoyl Peroxide Gel': {
     title: 'Benzoyl Peroxide Spot Gel',
@@ -81,6 +83,7 @@ const FULL_PRODUCT_CATALOG = {
     price: 25.0,
     usage: ['Morning', 'Evening'],
     image: '/Benzoyl-Peroxide-Spot Gel.jpg',
+    rating: 4.4,
   },
   'Clinique Take The Day Off™ Cleansing Balm': {
     title: 'Clinique Take The Day Off™ Cleansing Balm',
@@ -88,6 +91,7 @@ const FULL_PRODUCT_CATALOG = {
     price: 38.4,
     usage: ['Evening'],
     image: '/Cleansing-Balm.jpg',
+    rating: 4.8,
   },
   'Avocado Ceramide Moisture Barrier Cleanser': {
     title: 'Avocado Ceramide Moisture Barrier Cleanser',
@@ -95,6 +99,7 @@ const FULL_PRODUCT_CATALOG = {
     price: 28.0,
     usage: ['Morning', 'Evening'],
     image: '/Moisture-Barrier-Cleanser.jpg',
+    rating: 4.5,
   },
   'Retinol Treatment': {
     title: 'Advanced Retinol Night Treatment',
@@ -102,6 +107,7 @@ const FULL_PRODUCT_CATALOG = {
     price: 45.0,
     usage: ['Evening'],
     image: '/Retinol-skin-crem.jpg',
+    rating: 4.6,
   },
   'Clay Mask': {
     title: 'Oil-Absorbing Clay Mask',
@@ -109,6 +115,7 @@ const FULL_PRODUCT_CATALOG = {
     price: 18.0,
     usage: ['Evening'],
     image: '/Clay-Mask.avif',
+    rating: 4.3,
   },
   'Niacinamide Serum': {
     title: 'Niacinamide 10% Brightening Serum',
@@ -116,6 +123,7 @@ const FULL_PRODUCT_CATALOG = {
     price: 27.5,
     usage: ['Morning', 'Evening'],
     image: '/Niacinamide-Serum.jpg',
+    rating: 4.6,
   },
   'Vitamin C Serum': {
     title: 'Vitamin C Radiance Serum',
@@ -123,6 +131,7 @@ const FULL_PRODUCT_CATALOG = {
     price: 34.99,
     usage: ['Morning'],
     image: '/Vitamin-C-Serum.jpg',
+    rating: 4.7,
   },
   'Niacinamide Toner': {
     title: 'Pore Refining Niacinamide Toner',
@@ -130,6 +139,7 @@ const FULL_PRODUCT_CATALOG = {
     price: 21.0,
     usage: ['Morning', 'Evening'],
     image: '/Niacinamide-Toner.jpg',
+    rating: 4.4,
   },
   'Brightening Cream': {
     title: 'Melasma Brightening Cream',
@@ -137,6 +147,7 @@ const FULL_PRODUCT_CATALOG = {
     price: 39.0,
     usage: ['Evening'],
     image: '/Brightening-Cream.jpg',
+    rating: 4.5,
   },
   'Sunscreen SPF 50+': {
     title: 'Broad Spectrum SPF 50+ Sunscreen',
@@ -144,6 +155,7 @@ const FULL_PRODUCT_CATALOG = {
     price: 19.99,
     usage: ['Morning'],
     image: '/Spectrum-Sunscreen.jpg',
+    rating: 4.8,
   },
   'Azelaic Acid Serum': {
     title: 'Azelaic Acid 10% Refining Serum',
@@ -151,6 +163,7 @@ const FULL_PRODUCT_CATALOG = {
     price: 30.0,
     usage: ['Evening'],
     image: '/Azelaic-Acid-Serum.jpg',
+    rating: 4.4,
   },
   'Lactic Acid Exfoliant': {
     title: 'Lactic Acid 5% Gentle Exfoliant',
@@ -158,6 +171,7 @@ const FULL_PRODUCT_CATALOG = {
     price: 23.0,
     usage: ['Evening'],
     image: '/Lactic-Acid-Exfoliant.jpg',
+    rating: 4.5,
   },
   'Pore-Minimizing Toner': {
     title: 'Daily Pore-Minimizing Toner',
@@ -165,6 +179,7 @@ const FULL_PRODUCT_CATALOG = {
     price: 20.0,
     usage: ['Morning'],
     image: '/Pore-Minimizing-Toner.jpg',
+    rating: 4.3,
   },
   'Salicylic Acid Cleanser': {
     title: '2% Salicylic Acid Cleanser',
@@ -172,6 +187,7 @@ const FULL_PRODUCT_CATALOG = {
     price: 24.0,
     usage: ['Morning', 'Evening'],
     image: '/Salicylic-Acid-Cleanser.jpg',
+    rating: 4.6,
   },
   'Exfoliating Pads': {
     title: 'Glycolic Acid Exfoliating Pads',
@@ -179,16 +195,15 @@ const FULL_PRODUCT_CATALOG = {
     price: 29.0,
     usage: ['Evening'],
     image: '/Exfoliating-Pads.jpg',
+    rating: 4.4,
   },
-
-
-
   'Hyaluronic Acid Serum': {
     title: 'Intense Hydration Moisturizer',
     description: 'Nourishes and restores dry skin.',
     price: 26.0,
     usage: ['Morning', 'Evening'],
     image: '/Hydrating-Moisturizer.jpg',
+    rating: 4.7,
   },
   'Hydrating Moisturizer': {
     title: 'Intense Hydration Moisturizer',
@@ -196,6 +211,7 @@ const FULL_PRODUCT_CATALOG = {
     price: 26.0,
     usage: ['Morning', 'Evening'],
     image: '/Hydrating-Moisturizer.jpg',
+    rating: 4.7,
   },
   'Peptide Serum': {
     title: 'Firming Peptide Serum',
@@ -203,6 +219,7 @@ const FULL_PRODUCT_CATALOG = {
     price: 40.0,
     usage: ['Evening'],
     image: '/Peptide-Serum.jpg',
+    rating: 4.6,
   },
   'Anti-aging Night Cream': {
     title: 'Night Renewal Anti-aging Cream',
@@ -210,6 +227,7 @@ const FULL_PRODUCT_CATALOG = {
     price: 42.0,
     usage: ['Evening'],
     image: '/Anti-aging-Night-Cream.jpg',
+    rating: 4.8,
   },
   'Ceramide Repair Balm': {
     title: 'Ceramide Barrier Repair Balm',
@@ -217,6 +235,7 @@ const FULL_PRODUCT_CATALOG = {
     price: 35.0,
     usage: ['Evening'],
     image: '/Cleansing-Balm.jpg',
+    rating: 4.5,
   },
   'Glow Booster Serum': {
     title: 'Glow Booster Serum',
@@ -224,8 +243,10 @@ const FULL_PRODUCT_CATALOG = {
     price: 30.0,
     usage: ['Morning'],
     image: '/Glow-Serum.jpg',
+    rating: 4.6,
   },
-}
+};
+
 
 
 // Convert the Next.js request to a Node.js Readable stream
@@ -301,6 +322,7 @@ export async function POST(req) {
         price: 20.0,
         usage: ['Morning'],
         image: '/Glow-Serum.jpg',
+        rating:5
       }
 
       const stepTitle = name.toLowerCase().includes('cleanser')
@@ -317,6 +339,7 @@ export async function POST(req) {
           image: productData.image,
           price: productData.price.toFixed(2),
           timeOfDay: productData.usage.join(' • '),
+          rating: productData.rating,
         },
       }
     })
