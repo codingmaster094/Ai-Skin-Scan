@@ -76,7 +76,8 @@ export default function ScanClient() {
         {/* Header Cards */}
         <div className="overflow-x-auto whitespace-nowrap px-2">
           <div className="flex g-3 space-x-4">
-            {result.analysis.map((c, i) => (
+            {result && result.analysis ?
+            result.analysis.map((c, i) => (
               <div
                 key={i}
                 className="min-w-[200px] bg-white border rounded-xl shadow-md p-3 text-center"
@@ -88,7 +89,9 @@ export default function ScanClient() {
                 <div className="text-sm text-gray-500 mt-1">{c.status}</div>
                 <button className="mt-2 text-blue-600 text-sm font-medium">Show more</button>
               </div>
-            ))}
+            )): (
+  <p>No analysis data available.</p>
+)}
           </div>
         </div>
 
@@ -96,7 +99,8 @@ export default function ScanClient() {
         <h2 className="text-lg font-semibold mb-3">Recommendations for you</h2>
         <div className="space-y-4">
           <div className="recommendation-grid">
-            {result.recommendations.map((p, i) => {
+            {result && result.recommendations ? (
+            result.recommendations.map((p, i) => {
               const rating = p.product.rating || 0
               const fullStars = Math.floor(rating)
               const halfStar = rating % 1 >= 0.5
@@ -132,7 +136,7 @@ export default function ScanClient() {
                   </div>
                 </div>
               )
-            })}
+            })): (<p>No recommendations data available.</p>)}
           </div>
         </div>
 
