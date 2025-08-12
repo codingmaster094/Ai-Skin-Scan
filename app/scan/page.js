@@ -8,6 +8,8 @@ export default function ScanPage() {
   const [preview, setPreview] = useState(null)
   const [result, setResult] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [scanning, setScanning] = useState(false)
+
 
   const handleFileInput = (e) => {
     const file = e.target.files[0]
@@ -19,10 +21,16 @@ export default function ScanPage() {
   const handleSubmit = async () => {
     if (!image) return alert('Please select or take a photo first.')
 
+    setScanning(true)      // Start scanning animation
+    setResult(null)        // Clear previous result if any
+    setLoading(true)
+
+    // Wait 10 seconds (simulate scanning effect)
+    await new Promise((resolve) => setTimeout(resolve, 10000))
+
     const formData = new FormData()
     formData.append('image', image)
 
-    setLoading(true)
     try {
       const res = await fetch('/api/scan', {
         method: 'POST',
@@ -35,66 +43,68 @@ export default function ScanPage() {
       alert('Analysis failed: ' + err.message)
     }
     setLoading(false)
+    setScanning(false)     // Stop scanning animation
   }
-console.log("result" , result)
+
+
   if (result) {
     return (
       <main className="min-h-screen bg-white text-black p-4 max-w-md mx-auto text-left font-sans">
         {/* Header Cards */}
         <div className="overflow-x-auto whitespace-nowrap px-2">
-      <div className="flex g-3 space-x-4">
-        {result.analysis.map((c, i) => (
-          <div
-            key={i}
-            className="min-w-[200px] bg-white border rounded-xl shadow-md p-3 text-center"
-          >
-            <div className="text-md font-medium text-gray-800">{c.name}</div>
-            {c.score !== null && (
-              <div className="text-sm text-orange-600 font-semibold mt-1">{c.score} / 100</div>
-            )}
-            <div className="text-sm text-gray-500 mt-1">{c.status}</div>
-            <button className="mt-2 text-blue-600 text-sm font-medium">Show more</button>
+          <div className="flex g-3 space-x-4">
+            {result.analysis.map((c, i) => (
+              <div
+                key={i}
+                className="min-w-[200px] bg-white border rounded-xl shadow-md p-3 text-center"
+              >
+                <div className="text-md font-medium text-gray-800">{c.name}</div>
+                {c.score !== null && (
+                  <div className="text-sm text-orange-600 font-semibold mt-1">{c.score} / 100</div>
+                )}
+                <div className="text-sm text-gray-500 mt-1">{c.status}</div>
+                <button className="mt-2 text-blue-600 text-sm font-medium">Show more</button>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-    </div>
+        </div>
 
         {/* Recommendations */}
         <h2 className="text-lg font-semibold mb-3">Recommendations for you</h2>
         <div className="space-y-4">
           <div className="recommendation-grid">
             {result.recommendations.map((p, i) => {
-              console.log("ppp" , p)
+              console.log("ppp", p)
               const rating = p.product.rating || 0;
               const fullStars = Math.floor(rating);
               const halfStar = rating % 1 >= 0.5;
               const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
               return (
-              <div key={i} className="bg-blue-50 rounded-xl p-4 shadow-sm">
-                <h3 className="font-semibold text-sm text-blue-800 mb-1">{p.stepTitle}</h3>
-                <p className="text-xs text-gray-600 mb-3">{p.description}</p>
-                <div className="card">
-                  <img src={p.product.image}
-                    alt={p.product.name} width={150} height={100} />
-                  <div className="card-content">
-                    <h3 className="card-title">{p.product.name}</h3>
-                    <div className="price">${p.product.price}</div>
-                    🕒 {p.product.timeOfDay}
-                    <div className="rating">
-                      {Array(fullStars).fill('★').map((star, idx) => (
-                        <span key={`full-${idx}`}>{star}</span>
-                      ))}
-                      {halfStar && <span>★</span>} {/* Replace with half-star icon if needed */}
-                      {Array(emptyStars).fill('☆').map((star, idx) => (
-                        <span key={`empty-${idx}`}>{star}</span>
-                      ))}
-                      <span className="text-gray-600 text-sm ml-1">({rating})</span>
+                <div key={i} className="bg-blue-50 rounded-xl p-4 shadow-sm">
+                  <h3 className="font-semibold text-sm text-blue-800 mb-1">{p.stepTitle}</h3>
+                  <p className="text-xs text-gray-600 mb-3">{p.description}</p>
+                  <div className="card">
+                    <img src={p.product.image}
+                      alt={p.product.name} width={150} height={100} />
+                    <div className="card-content">
+                      <h3 className="card-title">{p.product.name}</h3>
+                      <div className="price">${p.product.price}</div>
+                      🕒 {p.product.timeOfDay}
+                      <div className="rating">
+                        {Array(fullStars).fill('★').map((star, idx) => (
+                          <span key={`full-${idx}`}>{star}</span>
+                        ))}
+                        {halfStar && <span>★</span>} {/* Replace with half-star icon if needed */}
+                        {Array(emptyStars).fill('☆').map((star, idx) => (
+                          <span key={`empty-${idx}`}>{star}</span>
+                        ))}
+                        <span className="text-gray-600 text-sm ml-1">({rating})</span>
+                      </div>
+                      <a href="#" className="button">Add to Cart</a>
                     </div>
-                    <a href="#" className="button">Add to Cart</a>
                   </div>
                 </div>
-              </div>
-            )
+              )
             })}
           </div>
         </div>
@@ -128,9 +138,21 @@ console.log("result" , result)
 
       {/* Title */}
       <div className="text-center mt-12">
-        <h2 className="text-lg sm:text-xl font-semibold">
-          Select the capture option
-        </h2>
+        {
+          preview && 
+        <div style={{ position: 'relative', width: 400, height: 485, overflow: 'hidden' }}>
+        <img
+          src={preview}
+          alt="preview"
+          width={400}
+          height={485}
+          className="object-cover rounded-lg border"
+          style={{ borderRadius: '12px' }}
+        />
+        {scanning && <div className="scan-overlay"></div>}
+      </div>
+        }
+        {/* Preview */}
       </div>
 
       {/* Buttons */}
@@ -164,14 +186,7 @@ console.log("result" , result)
           className="hidden"
         />
 
-        {/* Preview */}
-        {preview && (
-          <img
-            src={preview}
-            alt="preview"
-            className="w-48 h-48 object-cover rounded-lg border mx-auto mt-4"
-          />
-        )}
+
 
         {/* Action Buttons */}
         <div className="flex gap-4 mt-6">

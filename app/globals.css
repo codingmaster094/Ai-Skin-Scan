@@ -545,7 +545,7 @@ Constrain images and videos to the parent width and preserve their intrinsic asp
 img,
 video {
   max-width: 100%;
-  height: auto;
+  /* height: auto; */
 }
 
 /* Make elements with the HTML hidden attribute stay hidden by default */
@@ -1118,6 +1118,47 @@ video {
 .disabled\:opacity-50:disabled {
   opacity: 0.5;
 }
+
+@keyframes scan {
+  0% {
+    transform: translateY(-100%); /* start fully above container */
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    transform: translateY(100%); /* move fully to bottom inside container */
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+
+.scan-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; /* must match parent height */
+  pointer-events: none;
+  background: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: scan 4s ease-in-out infinite;
+  mix-blend-mode: screen;
+  border-radius: 12px;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
+}
+
+
+
+
 
 @media (min-width: 640px) {
   .sm\:text-base {
