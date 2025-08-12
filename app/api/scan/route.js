@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server'
 import formidable from 'formidable'
 import { Readable } from 'stream'
-import { scanResults } from '@/app/store'
 import fs from 'fs'
 import path from 'path'
 // Disable default body parsing
@@ -263,30 +262,12 @@ async function streamToNodeReadable(webRequest) {
   return stream
 }
 
-export async function GET(req) {
-  const { searchParams } = new URL(req.url)
-  const sessionId = searchParams.get('id')
-
-  if (!sessionId || !scanResults[sessionId]) {
-    return NextResponse.json({ error: 'No result yet' }, { status: 404 })
-  }
-
-  return NextResponse.json(scanResults[sessionId])
-}
-
 // const uploadDir = path.join(process.cwd(), 'public', 'upload')
 // fs.mkdirSync(uploadDir, { recursive: true })
 
 // Main POST handler
 export async function POST(req) {
   try {
-    const { searchParams } = new URL(req.url)
-    const sessionId = searchParams.get('id')
-
-    if (!sessionId) {
-      return NextResponse.json({ error: 'Missing session ID' }, { status: 400 })
-    }
-
     const contentType = req.headers.get('content-type')
     const contentLength = req.headers.get('content-length')
 
@@ -295,15 +276,20 @@ export async function POST(req) {
     }
 
     const nodeReadable = await streamToNodeReadable(req)
+
     nodeReadable.headers = {
       'content-type': contentType,
       'content-length': contentLength,
     }
 
     const form = formidable({
-      multiples: false,
-      keepExtensions: true,
-    })
+       multiples: false,
+        keepExtensions: true,
+      //   uploadDir: uploadDir, // 👈 set upload destination
+      // filename: (name, ext, part) => {
+      //   return `${Date.now()}-${part.originalFilename}`
+      // },
+       } )
 
     const { fields, files } = await new Promise((resolve, reject) => {
       form.parse(nodeReadable, (err, fields, files) => {
@@ -312,17 +298,20 @@ export async function POST(req) {
       })
     })
 
-    const image = files.image
+    // const image = files.image
+    // if (!image) throw new Error('No image uploaded')
+
+     const image = files.image
     if (!image || !image[0]) throw new Error('No image uploaded')
 
-    // Just simulating save — in production, store in /public/upload or cloud
     const savedPath = image[0].filepath
     const filename = path.basename(savedPath)
-    const publicUrl = `/upload/${filename}`
+    const publicUrl = `/upload/${filename}` // 👈 public URL 
 
-    // Select random conditions and products
+    // Select random conditions and related product names
     const shuffled = CONDITIONS.sort(() => 0.5 - Math.random())
     const selectedConditions = shuffled.slice(0, Math.floor(Math.random() * 3) + 2)
+
     const flatProducts = selectedConditions.flatMap(condition => PRODUCT_MAP[condition] || [])
     const uniqueProducts = Array.from(new Set(flatProducts))
 
@@ -333,7 +322,7 @@ export async function POST(req) {
         price: 20.0,
         usage: ['Morning'],
         image: '/Glow-Serum.jpg',
-        rating: 5,
+        rating:5
       }
 
       const stepTitle = name.toLowerCase().includes('cleanser')
@@ -355,19 +344,15 @@ export async function POST(req) {
       }
     })
 
-    const resultData = {
+    return NextResponse.json({
       analysis: selectedConditions.map(condition => ({
+        // user_image: publicUrl,
         name: condition,
         status: ['Bad', 'Average', 'Good'][Math.floor(Math.random() * 3)],
         score: Math.floor(Math.random() * 41) + 60,
       })),
       recommendations: recommendedProducts,
-    }
-
-    // Save to in-memory store
-    scanResults[sessionId] = resultData
-
-    return NextResponse.json(resultData)
+    })
   } catch (err) {
     return NextResponse.json({ error: 'Upload failed: ' + err.message }, { status: 500 })
   }
